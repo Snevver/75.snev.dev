@@ -104,24 +104,20 @@ const deletePhoto = () => {
             </section>
             <section class="grid gap-3 md:grid-cols-4">
                 <div class="rounded-xl bg-zinc-900 p-4">
-                    <p class="text-xs text-zinc-400">perfect days</p>
+                    <p class="text-xs text-zinc-400">Perfect days</p>
                     <p class="text-xl">{{ stats.perfect_days }}</p>
                 </div>
                 <div class="rounded-xl bg-zinc-900 p-4">
-                    <p class="text-xs text-zinc-400">current streak</p>
+                    <p class="text-xs text-zinc-400">Current streak</p>
                     <p class="text-xl">{{ stats.current_streak }}</p>
                 </div>
                 <div class="rounded-xl bg-zinc-900 p-4">
-                    <p class="text-xs text-zinc-400">photos uploaded</p>
-                    <p class="text-xl">{{ stats.photos_uploaded }}</p>
-                </div>
-                <div class="rounded-xl bg-zinc-900 p-4">
-                    <p class="text-xs text-zinc-400">days remaining</p>
+                    <p class="text-xs text-zinc-400">Days remaining</p>
                     <p class="text-xl">{{ stats.days_remaining }}</p>
                 </div>
             </section>
             <section class="rounded-2xl bg-zinc-900 p-5">
-                <h2 class="font-semibold">today's tasks</h2>
+                <h2 class="font-semibold">Today's tasks</h2>
                 <div class="mt-4 space-y-2">
                     <label
                         v-for="task in tasks"
@@ -167,7 +163,7 @@ const deletePhoto = () => {
                 </div>
             </section>
             <section class="rounded-2xl bg-zinc-900 p-5">
-                <h2 class="font-semibold">weightlifting this week</h2>
+                <h2 class="font-semibold">Weightlifting this week</h2>
                 <p class="text-zinc-300">
                     {{ weeklyProgress.completed }} / {{ weeklyProgress.target }}
                 </p>
@@ -185,7 +181,7 @@ const deletePhoto = () => {
                 </button>
             </section>
             <section class="rounded-2xl bg-zinc-900 p-5">
-                <h2 class="font-semibold">progress photo</h2>
+                <h2 class="font-semibold">Progress photo</h2>
                 <p class="mt-1 text-sm text-zinc-400">
                     Upload today&apos;s check-in. You can replace or delete it
                     anytime.
