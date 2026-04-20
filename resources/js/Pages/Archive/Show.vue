@@ -22,6 +22,18 @@ const statusLabel = (status) =>
         today: "today",
         upcoming: "upcoming",
     })[status] ?? status;
+
+const normalizeNotes = (value) => {
+    if (!value) return "";
+
+    const withLineBreaks = value
+        .replace(/<\s*br\s*\/?\s*>/gi, "\n")
+        .replace(/<\/(p|div|li|h[1-6]|blockquote)>/gi, "\n");
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = withLineBreaks.replace(/<[^>]+>/g, "");
+
+    return textarea.value.trim();
+};
 </script>
 
 <template>
@@ -120,10 +132,14 @@ const statusLabel = (status) =>
 
                             <div>
                                 <h3 class="font-medium">notes</h3>
-                                <p class="mt-1 text-zinc-300">
-                                    {{
-                                        selectedDay.details.notes || "No notes."
-                                    }}
+                                <div
+                                    v-if="selectedDay.details.notes"
+                                    class="mt-1 whitespace-pre-wrap text-zinc-300"
+                                >
+                                    {{ normalizeNotes(selectedDay.details.notes) }}
+                                </div>
+                                <p v-else class="mt-1 text-zinc-300">
+                                    No notes.
                                 </p>
                             </div>
 

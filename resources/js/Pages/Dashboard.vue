@@ -4,6 +4,18 @@ import axios from "axios";
 import { Head, router, useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
 
+const normalizeNotes = (value) => {
+    if (!value) return "";
+
+    const withLineBreaks = value
+        .replace(/<\s*br\s*\/?\s*>/gi, "\n")
+        .replace(/<\/(p|div|li|h[1-6]|blockquote)>/gi, "\n");
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = withLineBreaks.replace(/<[^>]+>/g, "");
+
+    return textarea.value.trim();
+};
+
 const props = defineProps({
     currentDay: Number,
     tasks: Array,
@@ -16,7 +28,7 @@ const props = defineProps({
     todayNotes: String,
 });
 const notesForm = useForm({
-    notes: props.todayNotes ?? "",
+    notes: normalizeNotes(props.todayNotes ?? ""),
     log_date: props.today,
 });
 const photoForm = useForm({ photo: null, log_date: props.today });
@@ -170,10 +182,18 @@ const deletePhoto = () => {
             </section>
             <section class="rounded-2xl bg-zinc-900 p-5">
                 <h2 class="font-semibold">Notes</h2>
+                <p class="mt-1 text-sm text-zinc-400">
+                    Press Enter for a new line. Notes are saved as plain text.
+                </p>
+
                 <textarea
                     v-model="notesForm.notes"
-                    class="mt-3 min-h-28 w-full rounded-lg bg-zinc-800 p-3"
-                /><button
+                    rows="10"
+                    class="mt-3 w-full rounded-xl border border-zinc-700 bg-zinc-950/70 p-4 text-zinc-100 placeholder:text-zinc-500 focus:border-emerald-500 focus:ring-emerald-500"
+                    placeholder="Write today's notes..."
+                ></textarea>
+
+                <button
                     class="mt-3 min-h-11 rounded-lg bg-emerald-500 px-4 font-semibold text-zinc-950"
                     @click="saveNotes"
                 >
