@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Notifications\QueuedResetPassword;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -81,10 +80,5 @@ class User extends Authenticatable
     public function getRouteKeyName(): string
     {
         return 'username';
-    }
-
-    public function sendPasswordResetNotification($token): void
-    {
-        $this->notify(new QueuedResetPassword($token));
     }
 }
