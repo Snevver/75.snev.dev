@@ -182,9 +182,6 @@ const deletePhoto = () => {
             </section>
             <section class="rounded-2xl bg-zinc-900 p-5">
                 <h2 class="font-semibold">Notes</h2>
-                <p class="mt-1 text-sm text-zinc-400">
-                    Press Enter for a new line. Notes are saved as plain text.
-                </p>
 
                 <textarea
                     v-model="notesForm.notes"
