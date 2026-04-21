@@ -20,7 +20,6 @@ class TaskSeeder extends Seeder
             ['title' => 'Take a progress photo', 'description' => null, 'frequency' => 'daily', 'icon' => '📷', 'sort_order' => 5],
             ['title' => 'Take creatine', 'description' => null, 'frequency' => 'daily', 'icon' => '🧪', 'sort_order' => 6],
             ['title' => 'Read 10 pages of a non-fiction book', 'description' => null, 'frequency' => 'daily', 'icon' => '📚', 'sort_order' => 7],
-            ['title' => 'Weightlifting session (3x/week)', 'description' => null, 'frequency' => 'weekly', 'icon' => '🏋️', 'sort_order' => 8],
         ];
 
         foreach ($tasks as $task) {

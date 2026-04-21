@@ -24,6 +24,15 @@ const statusLabel = (status) =>
         upcoming: "⏳ Upcoming",
     })[status] ?? status;
 
+const statusClasses = (status) =>
+    ({
+        perfect: "border-emerald-500/60 bg-emerald-500/20 text-emerald-50 hover:bg-emerald-500/25",
+        today: "border-amber-500/60 bg-amber-500/20 text-amber-50 hover:bg-amber-500/25",
+        upcoming: "border-zinc-700 bg-zinc-800 text-zinc-100 hover:bg-zinc-700",
+        missed: "border-red-500/60 bg-red-500/15 text-red-50 hover:bg-red-500/20",
+        partial: "border-red-500/60 bg-red-500/15 text-red-50 hover:bg-red-500/20",
+    })[status] ?? "border-zinc-700 bg-zinc-800 text-zinc-100 hover:bg-zinc-700";
+
 const normalizeNotes = (value) => {
     if (!value) return "";
 
@@ -52,11 +61,14 @@ const normalizeNotes = (value) => {
                         <button
                             v-for="day in days"
                             :key="day.day_number"
-                            class="min-h-11 rounded-lg border px-2 py-2 text-left text-sm"
+                            class="min-h-11 rounded-lg border px-2 py-2 text-left text-sm transition-colors"
                             :class="
-                                selectedDayNumber === day.day_number
-                                    ? 'border-emerald-500 bg-emerald-500/20'
-                                    : 'border-zinc-700 bg-zinc-800 hover:bg-zinc-700'
+                                [
+                                    statusClasses(day.status),
+                                    selectedDayNumber === day.day_number
+                                        ? 'ring-2 ring-emerald-400 ring-offset-2 ring-offset-zinc-900'
+                                        : '',
+                                ]
                             "
                             @click="selectedDayNumber = day.day_number"
                         >

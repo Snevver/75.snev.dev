@@ -38,42 +38,6 @@ defineProps({
                                 Ended on {{ challenge.end_date }}
                             </p>
                         </div>
-                        <div
-                            class="grid grid-cols-2 gap-3 text-right sm:grid-cols-4"
-                        >
-                            <div>
-                                <p class="text-lg font-bold text-emerald-400">
-                                    {{ challenge.perfect_days }}
-                                </p>
-                                <p class="text-xs text-zinc-400">
-                                    perfect days
-                                </p>
-                            </div>
-                            <div>
-                                <p class="text-lg font-bold text-blue-400">
-                                    {{ challenge.current_streak }}
-                                </p>
-                                <p class="text-xs text-zinc-400">
-                                    current streak
-                                </p>
-                            </div>
-                            <div>
-                                <p class="text-lg font-bold text-amber-400">
-                                    {{ challenge.photos_uploaded }}
-                                </p>
-                                <p class="text-xs text-zinc-400">
-                                    photos uploaded
-                                </p>
-                            </div>
-                            <div>
-                                <p class="text-lg font-bold text-zinc-100">
-                                    {{ challenge.days_remaining }}
-                                </p>
-                                <p class="text-xs text-zinc-400">
-                                    days remaining
-                                </p>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="mt-4">

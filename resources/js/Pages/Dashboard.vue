@@ -114,20 +114,6 @@ const deletePhoto = () => {
                     />
                 </div>
             </section>
-            <section class="grid gap-3 md:grid-cols-4">
-                <div class="rounded-xl bg-zinc-900 p-4">
-                    <p class="text-xs text-zinc-400">Perfect days</p>
-                    <p class="text-xl">{{ stats.perfect_days }}</p>
-                </div>
-                <div class="rounded-xl bg-zinc-900 p-4">
-                    <p class="text-xs text-zinc-400">Current streak</p>
-                    <p class="text-xl">{{ stats.current_streak }}</p>
-                </div>
-                <div class="rounded-xl bg-zinc-900 p-4">
-                    <p class="text-xs text-zinc-400">Days remaining</p>
-                    <p class="text-xl">{{ stats.days_remaining }}</p>
-                </div>
-            </section>
             <section class="rounded-2xl bg-zinc-900 p-5">
                 <h2 class="font-semibold">Today's tasks</h2>
                 <div class="mt-4 space-y-2">
@@ -173,12 +159,6 @@ const deletePhoto = () => {
                         >
                     </label>
                 </div>
-            </section>
-            <section class="rounded-2xl bg-zinc-900 p-5">
-                <h2 class="font-semibold">Weightlifting this week</h2>
-                <p class="text-zinc-300">
-                    {{ weeklyProgress.completed }} / {{ weeklyProgress.target }}
-                </p>
             </section>
             <section class="rounded-2xl bg-zinc-900 p-5">
                 <h2 class="font-semibold">Notes</h2>

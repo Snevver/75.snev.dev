@@ -8,7 +8,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Collection;
 
 class ChallengeService
 {
@@ -19,20 +18,16 @@ class ChallengeService
 
     public function currentDay(User $user): int
     {
-        if (! $user->challenge_start_date) {
-            return 1;
-        }
-
-        $start = CarbonImmutable::parse($user->challenge_start_date, $user->timezone)->startOfDay();
         $today = $this->todayFor($user);
+        $start = $this->challengeStartDateFor($user, $today);
 
-        return max(1, min(75, $start->diffInDays($today) + 1));
+        return (int) max(1, min(75, $start->diffInDays($today) + 1));
     }
 
     public function logForDate(User $user, CarbonImmutable $date): DailyLog
     {
-        $start = CarbonImmutable::parse($user->challenge_start_date ?? $date->toDateString(), $user->timezone)->startOfDay();
-        $dayNumber = max(1, min(75, $start->diffInDays($date) + 1));
+        $start = $this->challengeStartDateFor($user, $date);
+        $dayNumber = (int) max(1, min(75, $start->diffInDays($date) + 1));
         $dateString = $date->toDateString();
 
         $existing = DailyLog::query()
@@ -109,29 +104,62 @@ class ChallengeService
 
     public function challengeStats(User $user): array
     {
-        $logs = $user->dailyLogs()->get();
-        $perfectDays = $logs->where('is_complete', true)->count();
+        $perfectDays = $user->dailyLogs()->where('is_complete', true)->count();
         $photos = $user->progressPhotos()->count();
         $day = $this->currentDay($user);
 
         return [
             'perfect_days' => $perfectDays,
-            'current_streak' => $this->currentStreak($logs),
+            'current_streak' => $this->currentStreak($user),
             'photos_uploaded' => $photos,
-            'days_remaining' => max(0, 75 - $day),
+            'days_remaining' => (int) max(0, 75 - $day),
         ];
     }
 
-    private function currentStreak(Collection $logs): int
+    private function currentStreak(User $user): int
     {
+        $today = $this->todayFor($user);
+        $start = $this->challengeStartDateFor($user, $today);
+        $challengeEnd = $start->addDays(74);
+        $end = $today->lessThan($challengeEnd) ? $today : $challengeEnd;
+
+        $logs = $user->dailyLogs()
+            ->whereBetween('log_date', [$start->toDateString(), $end->toDateString()])
+            ->orderByDesc('log_date')
+            ->get()
+            ->keyBy(fn (DailyLog $log) => $log->log_date->toDateString());
+
+        $latestLog = $logs->first();
+
+        if (! $latestLog) {
+            return 0;
+        }
+
         $streak = 0;
-        foreach ($logs->sortByDesc('log_date') as $log) {
-            if (! $log->is_complete) {
+        for ($date = $latestLog->log_date->startOfDay(); $date->greaterThanOrEqualTo($start); $date = $date->subDay()) {
+            $log = $logs->get($date->toDateString());
+
+            if (! $log?->is_complete) {
                 break;
             }
             $streak++;
         }
 
         return $streak;
+    }
+
+    private function challengeStartDateFor(User $user, CarbonImmutable $fallbackDate): CarbonImmutable
+    {
+        if ($user->challenge_start_date) {
+            return CarbonImmutable::parse($user->challenge_start_date, $user->timezone)->startOfDay();
+        }
+
+        $firstLogDate = $user->dailyLogs()->orderBy('log_date')->value('log_date');
+
+        if ($firstLogDate) {
+            return CarbonImmutable::parse($firstLogDate, $user->timezone)->startOfDay();
+        }
+
+        return $fallbackDate->startOfDay();
     }
 }
