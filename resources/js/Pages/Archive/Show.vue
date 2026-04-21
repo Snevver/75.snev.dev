@@ -47,25 +47,6 @@ const normalizeNotes = (value) => {
                 <p class="mt-1 text-sm text-zinc-400">
                     {{ archive.start_date }} to {{ archive.end_date }}
                 </p>
-
-                <div class="mt-4 grid gap-3 md:grid-cols-4">
-                    <div class="rounded-xl bg-zinc-800 p-4">
-                        <p class="text-xs text-zinc-400">perfect days</p>
-                        <p class="text-xl">{{ stats.perfect_days }}</p>
-                    </div>
-                    <div class="rounded-xl bg-zinc-800 p-4">
-                        <p class="text-xs text-zinc-400">current streak</p>
-                        <p class="text-xl">{{ stats.current_streak }}</p>
-                    </div>
-                    <div class="rounded-xl bg-zinc-800 p-4">
-                        <p class="text-xs text-zinc-400">photos uploaded</p>
-                        <p class="text-xl">{{ stats.photos_uploaded }}</p>
-                    </div>
-                    <div class="rounded-xl bg-zinc-800 p-4">
-                        <p class="text-xs text-zinc-400">days remaining</p>
-                        <p class="text-xl">{{ stats.days_remaining }}</p>
-                    </div>
-                </div>
             </section>
 
             <div class="grid gap-4 lg:grid-cols-7">
