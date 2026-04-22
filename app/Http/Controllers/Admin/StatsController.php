@@ -18,7 +18,7 @@ class StatsController extends Controller
         return Inertia::render('Admin/Stats', [
             'stats' => [
                 'total_users' => User::count(),
-                'active_challenges' => User::whereNotNull('challenge_start_date')->whereNull('challenge_failed_at')->count(),
+                'active_challenges' => User::whereHas('currentChallenge', fn ($query) => $query->whereNotNull('start_date')->whereNull('failed_at'))->count(),
                 'tasks_completed_today' => DailyLog::whereDate('log_date', $today)->where('is_complete', true)->count(),
             ],
         ]);

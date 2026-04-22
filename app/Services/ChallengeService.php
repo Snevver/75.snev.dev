@@ -20,8 +20,10 @@ class ChallengeService
     {
         $today = $this->todayFor($user);
         $start = $this->challengeStartDateFor($user, $today);
+        $loggedDay = $this->loggedDayFor($user, $today);
+        $elapsedDay = (int) max(1, min(75, $start->diffInDays($today) + 1));
 
-        return (int) max(1, min(75, $start->diffInDays($today) + 1));
+        return max($elapsedDay, $loggedDay);
     }
 
     public function logForDate(User $user, CarbonImmutable $date): DailyLog
@@ -146,6 +148,15 @@ class ChallengeService
         }
 
         return $streak;
+    }
+
+    private function loggedDayFor(User $user, CarbonImmutable $today): int
+    {
+        $loggedDays = $user->dailyLogs()
+            ->whereDate('log_date', '<', $today->toDateString())
+            ->count();
+
+        return (int) max(1, min(75, $loggedDays + 1));
     }
 
     private function challengeStartDateFor(User $user, CarbonImmutable $fallbackDate): CarbonImmutable

@@ -14,7 +14,8 @@ class OtherUsersController extends Controller
         $users = User::query()
             ->where('id', '!=', $request->user()->id)
             ->whereNull('deactivated_at')
-            ->select(['id', 'name', 'username', 'avatar', 'is_public', 'challenge_start_date'])
+            ->with('currentChallenge')
+            ->select(['id', 'name', 'username', 'avatar', 'is_public'])
             ->orderBy('name')
             ->get()
             ->map(fn (User $user) => [

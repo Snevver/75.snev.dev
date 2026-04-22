@@ -22,11 +22,11 @@ class PublicProfileController extends Controller
             ->where('user_id', $user->id)
             ->with(['taskCompletions.task', 'progressPhoto'])
             ->get()
-            ->keyBy(fn(DailyLog $log) => $log->day_number);
+            ->keyBy(fn(DailyLog $log) => $log->log_date->toDateString());
 
         $days = collect(range(1, 75))->map(function (int $dayNumber) use ($start, $today, $logs, $user) {
             $date = $start->addDays($dayNumber - 1);
-            $log = $logs->get($dayNumber);
+            $log = $logs->get($date->toDateString());
             $isPast = $date->lt($today);
             $isToday = $date->isSameDay($today);
 
